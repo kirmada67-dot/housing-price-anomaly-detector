@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import pandas as pn
-from sklearn.model_selection import train_test_split
+import numpy as np
+from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.pipeline import Pipeline
 df = pn.read_csv("Housing.csv")
 df["mainroad"] = df["mainroad"].map({"yes": 1, "no": 0})
 df["guestroom"] = df["guestroom"].map({"yes": 1, "no": 0})
@@ -22,8 +24,34 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_
 
 model = LinearRegression()
 model.fit(x_train, y_train)
-pred = model.predict(x_test)
-
+pipeline = Pipeline([("model", model)])
+scores = cross_val_score(pipeline, x, y, cv=5, scoring='neg_mean_squared_error')
+mse = -scores.mean()
+rmse = np.sqrt(mse)
 print("Mdoel: ", model)
-print("MSE: ", mean_squared_error(y_test, pred))
-print("r2_score: ", r2_score(y_test, pred))
+print("RMSE: ", rmse)
+
+features = pn.DataFrame([{"area": 6500, "bedrooms": 3, "bathrooms": 2, "stories": 3, "mainroad": 1, "guestroom": 0, "basement": 0, "hotwaterheating": 0, "airconditioning": 1, "parking": 0, "prefarea": 1, "furnishingstatus_furnished": 1, "furnishingstatus_semi-furnished": 0, "furnishingstatus_unfurnished": 0 }])
+actual_price = 6650000
+
+def classify_property(model, input_features, actual_price, rmse, k=0.7):
+	pred = model.predict(input_features)[0]
+	threshold = k * rmse
+	gap = actual_price - pred
+	percentage_gap = (gap / pred) * 100
+
+	if gap > threshold:
+		label = "Overpriced"
+	elif gap < -threshold:
+		label = "Underpriced"
+	else:
+		label = "Fair"
+
+	return pred, gap, percentage_gap, label
+
+prediction, gap, gap_percentage, label = classify_property(model, features, actual_price, rmse, k=0.7)
+print("Actual price: ", actual_price)
+print("Prediction: ", prediction)
+print("Gap: ", gap)
+print("Gap precentage: ", gap_percentage)
+print("label: ", label)
