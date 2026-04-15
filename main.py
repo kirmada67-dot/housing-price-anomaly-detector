@@ -32,22 +32,32 @@ print("Mdoel: ", model)
 print("RMSE: ", rmse)
 
 features = pn.DataFrame([{"area": 6500, "bedrooms": 3, "bathrooms": 2, "stories": 3, "mainroad": 1, "guestroom": 0, "basement": 0, "hotwaterheating": 0, "airconditioning": 1, "parking": 0, "prefarea": 1, "furnishingstatus_furnished": 1, "furnishingstatus_semi-furnished": 0, "furnishingstatus_unfurnished": 0 }])
-actual_price = 6650000
+actual_price = 6000000
 
 def classify_property(model, input_features, actual_price, rmse, k=0.7):
-	pred = model.predict(input_features)[0]
+	prediction = model.predict(input_features)[0]
 	threshold = k * rmse
-	gap = actual_price - pred
-	percentage_gap = (gap / pred) * 100
-
-	if gap > threshold:
-		label = "Overpriced"
-	elif gap < -threshold:
-		label = "Underpriced"
+	gap = actual_price - prediction
+	if prediction != 0:
+		percentage_gap = (gap / prediction) * 100
 	else:
-		label = "Fair"
+		percentage_gap = 0
 
-	return pred, gap, percentage_gap, label
+	if abs(gap) <= threshold:
+		label = "fair"
+	else:
+		if gap < 0:
+			if abs(percentage_gap) < 20:
+				label = "slightly underpriced"
+			else:
+				label = "strongly underpriced"
+		else:
+			if abs(percentage_gap) < 20:
+				label = "slightly overpriced"
+			else:
+				label = "strongly overpriced"
+
+	return prediction, gap, percentage_gap, label
 
 prediction, gap, gap_percentage, label = classify_property(model, features, actual_price, rmse, k=0.7)
 print("Actual price: ", actual_price)
