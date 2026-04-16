@@ -1,5 +1,5 @@
 # Housing Price Anomaly Detector
-First ML project. Built on foundational knowledge of ML. An ML-based system that predicts house prices and classifies properties as fairly priced, underpriced, or overpriced. 
+An ML-based system that predicts house prices and classifies properties as fairly priced, underpriced, or overpriced. 
 Based on a housing dataset sourced from Kaggle (https://www.kaggle.com/datasets/yasserh/housing-prices-dataset/data?select=Housing.csv)
 
 ## Problem Statement
