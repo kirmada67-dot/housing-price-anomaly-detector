@@ -5,6 +5,13 @@ Based on a housing dataset sourced from Kaggle (https://www.kaggle.com/datasets/
 ## Problem Statement
 It is designed for individuals or families who are looking to buy or rent housing properties and want a better understanding of pricing before making a decision.
 
+## Data Insights
+
+- Area and number of rooms show moderate correlation  
+- Dataset exhibits non-linear relationships between features and price  
+- Tree-based models performed better than linear models  
+- Lack of location-based features limits overall prediction accuracy  
+
 ## Working
 The system takes inputs such as area, number of rooms, bathrooms, stories, and other property features, along with the actual listed price of the property.
 Based on this, the model predicts an expected fair price using historical housing data, and then compares it with the actual listing price to classify the property as fairly priced, slightly/strongly overpriced, or slightly/strongly underpriced.
@@ -15,6 +22,14 @@ Based on this, the model predicts an expected fair price using historical housin
    - fair
    - slightly/strongly underpriced
    - slightly/strongly overpriced
+
+## Application Preview
+
+### Input Interface
+![Input UI](screenshots/input.png)
+
+### Output Result
+![Output UI](screenshots/output.png)
 
 ## Features
 - Price prediction using Linear Regression (Baseline Model)  
@@ -27,6 +42,14 @@ Based on this, the model predicts an expected fair price using historical housin
 - Python
 - NumPy, Pandas
 - scikit-learn
+
+## Models Used
+
+- Linear Regression (Baseline)  
+- Random Forest Regressor  
+- XGBoost Regressor (Final Model)
+
+The final system uses a tuned XGBoost model due to better generalization performance and reduced overfitting compared to other models.
 
 ## Changelog
 
