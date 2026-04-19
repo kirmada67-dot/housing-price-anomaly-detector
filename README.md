@@ -30,7 +30,19 @@ Based on this, the model predicts an expected fair price using historical housin
 
 ## Changelog
 
-### v2.0 - Model Improvement (current)
+### v3.0 – Application Layer + System Architecture (current)
+
+- Restructured project into a clean modular format (`train.py`, `predict.py`, `app.py`)
+- Built a reusable inference pipeline (`predict.py`)
+- Added feature order enforcement to prevent incorrect predictions
+- Integrated trained model into a working Streamlit application
+- Implemented full input → prediction → decision flow in UI
+- Added support for real-time property evaluation through web interface
+- Organized dataset and models into separate directories (`data/`, `model/`)
+- Saved multiple models (Linear Regression, Random Forest, XGBoost) for future use
+- Improved overall project readability and maintainability
+
+### v2.0 - Model Improvement
 
 - Replaced Linear Regression with tuned XGBoost model
 - Reduced overfitting using lower learning rate and shallow trees

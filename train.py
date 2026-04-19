@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
+import joblib
 import pandas as pn
 import numpy as np
 from sklearn.model_selection import cross_val_score, train_test_split
-from xgboost import XGBRegressor
+#from xgboost import XGBRegressor
+from sklearn.ensemble import RandomForestRegressor
+#from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.pipeline import Pipeline
-df = pn.read_csv("Housing.csv")
+df = pn.read_csv("data/Housing.csv")
 df["mainroad"] = df["mainroad"].map({"yes": 1, "no": 0})
 df["guestroom"] = df["guestroom"].map({"yes": 1, "no": 0})
 df["basement"] = df["basement"].map({"yes": 1, "no": 0})
@@ -22,8 +25,11 @@ y = df["price"]
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-model = XGBRegressor(n_estimators=1000, learning_rate=0.01, max_depth=4, random_state=42)
-model.fit(x_train, y_train)
+#model = XGBRegressor(n_estimators=1000, learning_rate=0.01, max_depth=4, random_state=42)
+#model = LinearRegression()
+model = RandomForestRegressor(max_depth=7, n_estimators=300, random_state=42)
+model.fit(x, y)
+joblib.dump(model, "model/rf_model.pkl")
 pipeline = Pipeline([("model", model)])
 scores = cross_val_score(pipeline, x, y, cv=5, scoring='neg_mean_squared_error')
 mse = -scores.mean()
