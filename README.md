@@ -51,6 +51,17 @@ Based on this, the model predicts an expected fair price using historical housin
 
 The final system uses a tuned XGBoost model due to better generalization performance and reduced overfitting compared to other models.
 
+## How to Run
+
+Clone the repository and run the application:
+
+```bash
+git clone https://github.com/kirmada67-dot/housing-price-anomaly-detector
+cd housing-price-anomaly-detector
+pip install -r requirements.txt
+streamlit run app.py
+```
+
 ## Changelog
 
 ### v3.0 – Application Layer + System Architecture (current)
