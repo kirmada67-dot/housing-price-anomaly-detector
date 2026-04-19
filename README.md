@@ -30,7 +30,19 @@ Based on this, the model predicts an expected fair price using historical housin
 
 ## Changelog
 
-### v1.0 - Baseline Model (Current)
+### v2.0 - Model Improvement (current)
+
+- Replaced Linear Regression with tuned XGBoost model
+- Reduced overfitting using lower learning rate and shallow trees
+- Improved generalization performance (better test R²)
+- Compared multiple models:
+  - Linear Regression
+  - Random Forest
+  - XGBoost
+- Selected final model based on cross-validation and test performance
+- Integrated improved model into anomaly detection system
+
+### v1.0 - Baseline Model 
 - Implemented Linear Regression for price prediction
 - Applied cross-validation to evaluate model performance
 - Built RMSE-based threshold for pricing decisions
