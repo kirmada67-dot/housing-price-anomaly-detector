@@ -2,7 +2,7 @@
 import pandas as pn
 import numpy as np
 from sklearn.model_selection import cross_val_score, train_test_split
-from sklearn.linear_model import LinearRegression
+from xgboost import XGBRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.pipeline import Pipeline
 df = pn.read_csv("Housing.csv")
@@ -22,17 +22,17 @@ y = df["price"]
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-model = LinearRegression()
+model = XGBRegressor(n_estimators=1000, learning_rate=0.01, max_depth=4, random_state=42)
 model.fit(x_train, y_train)
 pipeline = Pipeline([("model", model)])
 scores = cross_val_score(pipeline, x, y, cv=5, scoring='neg_mean_squared_error')
 mse = -scores.mean()
 rmse = np.sqrt(mse)
-print("Mdoel: ", model)
+print("Model: ", model)
 print("RMSE: ", rmse)
 
 features = pn.DataFrame([{"area": 6500, "bedrooms": 3, "bathrooms": 2, "stories": 3, "mainroad": 1, "guestroom": 0, "basement": 0, "hotwaterheating": 0, "airconditioning": 1, "parking": 0, "prefarea": 1, "furnishingstatus_furnished": 1, "furnishingstatus_semi-furnished": 0, "furnishingstatus_unfurnished": 0 }])
-actual_price = 6000000
+actual_price = 6650000
 
 def classify_property(model, input_features, actual_price, rmse, k=0.7):
 	prediction = model.predict(input_features)[0]
